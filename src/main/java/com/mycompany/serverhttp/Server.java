@@ -16,6 +16,8 @@ import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.sql.*;
+import java.util.ArrayList;
 public class Server implements Runnable{ 
 	
 	static final File WEB_ROOT = new File("./file/");
@@ -24,6 +26,19 @@ public class Server implements Runnable{
 	static final String METHOD_NOT_SUPPORTED = "not_supported.html";
         static final String JSON_FILE = "PuntiVendita.json";
         static final String XML_FILE = "PuntiVendita.xml";
+        static final String XML_DB = "db/Alunni.xml";
+        static final String JSON_DB = "db/Alunni.json";
+        private final String querySQL = "SELECT * FROM persone";
+        final String urlSQL = "jdbc:mysql://";
+        private final String serverNameSQL = "localhost";
+        private final String portNumberSQL = ":3306/";
+        private final String databaseNameSQL = "tpsit";
+        private final String userNameSQL = "root";
+        private final String passwordSQL = "password";
+        private final String connessioneSQL = urlSQL + serverNameSQL + portNumberSQL + databaseNameSQL;
+        private Connection connessioneConDB = null;
+        private Statement statementSQL = null;
+        private ResultSet resultSetSQL = null;
 	// port to listen connection
 	static final int PORT = 8000;
 	
@@ -112,6 +127,43 @@ public class Server implements Runnable{
 				if (fileRequested.endsWith("/")) {
 					fileRequested += DEFAULT_FILE;
 				}
+                                else if(fileRequested.equals("/" + XML_DB))
+                                {
+                                    try {
+                                        connessioneConDB = DriverManager.getConnection(connessioneSQL, userNameSQL, passwordSQL);
+                                        System.out.println("CONNESSIONE CON SQL STABILITA");
+                                        statementSQL = connessioneConDB.createStatement();
+                                        resultSetSQL = statementSQL.executeQuery(querySQL);
+                                        ArrayList<Alunni> a = new ArrayList();
+                                        while(resultSetSQL.next()) {
+                                            a.add(new Alunni(resultSetSQL.getInt(1), resultSetSQL.getString(2), resultSetSQL.getString(3)));
+                                            System.out.println(a.toString());
+                                        }
+                                        XmlMapper xml = new XmlMapper();
+                                        xml.writeValue(new File(WEB_ROOT + "/" + XML_DB), a);
+                                        File file = new File(WEB_ROOT + "/" + XML_DB);
+                                    } catch (SQLException ex) {
+                                        System.out.println("Errore di comunicazione con il database");
+                                    }
+                                }
+                                else if(fileRequested.equals("/" + JSON_DB)) {
+                                    try {
+                                        ObjectMapper mapper = new ObjectMapper();
+                                        connessioneConDB = DriverManager.getConnection(connessioneSQL, userNameSQL, passwordSQL);
+                                        System.out.println("CONNESSIONE CON SQL STABILITA");
+                                        statementSQL = connessioneConDB.createStatement();
+                                        resultSetSQL = statementSQL.executeQuery(querySQL);
+                                        ArrayList<Alunni> a = new ArrayList();
+                                        while(resultSetSQL.next()) {
+                                            a.add(new Alunni(resultSetSQL.getInt(1), resultSetSQL.getString(2), resultSetSQL.getString(3)));
+                                            System.out.println(a.toString());
+                                        }
+                                        mapper.writeValue(new File(WEB_ROOT + "/" + JSON_DB), a);
+                                        File file = new File(WEB_ROOT + "/" + JSON_DB);
+                                    } catch (SQLException ex) {
+                                        System.out.println("Errore di comunicazione con il database");
+                                    }
+                                }
                                 else if(fileRequested.equals("/" + XML_FILE))
                                 {
                                     System.out.println("Richiesto file xml");
