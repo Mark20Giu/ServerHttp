@@ -15,7 +15,6 @@ import java.util.StringTokenizer;
 import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.sql.*;
 import java.util.ArrayList;
 public class Server implements Runnable{ 
@@ -232,7 +231,7 @@ public class Server implements Runnable{
 		byte[] fileData = new byte[fileLength];
 		
 		try {
-			fileData = Files.readAllBytes(Path.of(file.getPath()));
+			fileData = Files.readAllBytes(file.toPath());
 		} finally {
 			if (fileIn != null) 
 				fileIn.close();
