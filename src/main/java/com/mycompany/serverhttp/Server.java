@@ -133,9 +133,9 @@ public class Server implements Runnable{
                                         System.out.println("CONNESSIONE CON SQL STABILITA");
                                         statementSQL = connessioneConDB.createStatement();
                                         resultSetSQL = statementSQL.executeQuery(querySQL);
-                                        ArrayList<Alunni> a = new ArrayList();
+                                        Alunni a = new Alunni();
                                         while(resultSetSQL.next()) {
-                                            a.add(new Alunni(resultSetSQL.getInt(1), resultSetSQL.getString(2), resultSetSQL.getString(3)));
+                                            a.add(new Alunno(resultSetSQL.getInt(1), resultSetSQL.getString(2), resultSetSQL.getString(3)));
                                             System.out.println(a.toString());
                                         }
                                         XmlMapper xml = new XmlMapper();
@@ -152,10 +152,9 @@ public class Server implements Runnable{
                                         System.out.println("CONNESSIONE CON SQL STABILITA");
                                         statementSQL = connessioneConDB.createStatement();
                                         resultSetSQL = statementSQL.executeQuery(querySQL);
-                                        ArrayList<Alunni> a = new ArrayList();
+                                        Alunni a = new Alunni();
                                         while(resultSetSQL.next()) {
-                                            a.add(new Alunni(resultSetSQL.getInt(1), resultSetSQL.getString(2), resultSetSQL.getString(3)));
-                                            System.out.println(a.toString());
+                                            a.add(new Alunno(resultSetSQL.getInt(1), resultSetSQL.getString(2), resultSetSQL.getString(3)));
                                         }
                                         mapper.writeValue(new File(WEB_ROOT + "/" + JSON_DB), a);
                                         File file = new File(WEB_ROOT + "/" + JSON_DB);
