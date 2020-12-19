@@ -16,10 +16,9 @@ import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import java.nio.file.Files;
 import java.sql.*;
-import java.util.ArrayList;
 public class Server implements Runnable{ 
 	
-	static final File WEB_ROOT = new File("./file/");
+	static final File WEB_ROOT = new File("/home/cabox/workspace/ServerHttp/file");
 	static final String DEFAULT_FILE = "index.html";
 	static final String FILE_NOT_FOUND = "404.html";
 	static final String METHOD_NOT_SUPPORTED = "not_supported.html";
@@ -27,19 +26,19 @@ public class Server implements Runnable{
         static final String XML_FILE = "PuntiVendita.xml";
         static final String XML_DB = "db/Alunni.xml";
         static final String JSON_DB = "db/Alunni.json";
-        private final String querySQL = "SELECT * FROM persone";
+        private final String querySQL = "SELECT * FROM Alunni";
         final String urlSQL = "jdbc:mysql://";
-        private final String serverNameSQL = "localhost";
-        private final String portNumberSQL = ":3306/";
-        private final String databaseNameSQL = "tpsit";
-        private final String userNameSQL = "root";
-        private final String passwordSQL = "password";
-        private final String connessioneSQL = urlSQL + serverNameSQL + portNumberSQL + databaseNameSQL;
+        private final String hostNameSQL = "localhost";
+        private final String numPortSQL = ":3306/";
+        private final String DBNameSQL = "tpsit";
+        private final String userSQL = "root";
+        private final String passwordSQL = "root";
+        private final String connessioneDBSQL = urlSQL + hostNameSQL + numPortSQL + DBNameSQL;
         private Connection connessioneConDB = null;
         private Statement statementSQL = null;
         private ResultSet resultSetSQL = null;
 	// port to listen connection
-	static final int PORT = 8000;
+	static final int PORT = 3000;
 	
 	// verbose mode
 	static final boolean verbose = true;
@@ -129,7 +128,7 @@ public class Server implements Runnable{
                                 else if(fileRequested.equals("/" + XML_DB))
                                 {
                                     try {
-                                        connessioneConDB = DriverManager.getConnection(connessioneSQL, userNameSQL, passwordSQL);
+                                        connessioneConDB = DriverManager.getConnection(connessioneDBSQL, userSQL, passwordSQL);
                                         System.out.println("CONNESSIONE CON SQL STABILITA");
                                         statementSQL = connessioneConDB.createStatement();
                                         resultSetSQL = statementSQL.executeQuery(querySQL);
@@ -148,7 +147,7 @@ public class Server implements Runnable{
                                 else if(fileRequested.equals("/" + JSON_DB)) {
                                     try {
                                         ObjectMapper mapper = new ObjectMapper();
-                                        connessioneConDB = DriverManager.getConnection(connessioneSQL, userNameSQL, passwordSQL);
+                                        connessioneConDB = DriverManager.getConnection(connessioneDBSQL, userSQL, passwordSQL);
                                         System.out.println("CONNESSIONE CON SQL STABILITA");
                                         statementSQL = connessioneConDB.createStatement();
                                         resultSetSQL = statementSQL.executeQuery(querySQL);

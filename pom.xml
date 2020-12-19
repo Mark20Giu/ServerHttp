@@ -28,7 +28,7 @@
             <version>8.0.22</version>
         </dependency>
     </dependencies>
-    <name>pomSql</name>
+    <name>SerializzazioneSQL</name>
     <build>
         <finalName>MyApplication</finalName>
         <plugins>
