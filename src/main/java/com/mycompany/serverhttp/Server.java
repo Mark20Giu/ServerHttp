@@ -18,7 +18,7 @@ import java.nio.file.Files;
 import java.sql.*;
 public class Server implements Runnable{ 
 	
-	static final File WEB_ROOT = new File("/home/cabox/workspace/ServerHttp/file");
+	static final File WEB_ROOT = new File("./file");
 	static final String DEFAULT_FILE = "index.html";
 	static final String FILE_NOT_FOUND = "404.html";
 	static final String METHOD_NOT_SUPPORTED = "not_supported.html";
