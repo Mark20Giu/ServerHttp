@@ -4,7 +4,7 @@ create table if not exists Alunni(
 	id int not null,
 	nome varchar(40) not null,
     cognome varchar(40) not null,
-    primary key (idstudente)
+    primary key (id)
 );
 insert into Alunni (id, nome, cognome)
 values (1,"Aurora","Trentini"),
