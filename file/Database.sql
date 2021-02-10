@@ -1,4 +1,5 @@
 drop database if exists tpsit;
+create database tpsit;
 use tpsit;
 create table if not exists Alunni(
 	id int not null,
